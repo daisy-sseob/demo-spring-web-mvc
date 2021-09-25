@@ -1,2 +1,22 @@
-package me.sseob.demowebmvc;public class EventUpdateController {
+package me.sseob.demowebmvc;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(
+		consumes = MediaType.APPLICATION_JSON_VALUE,
+		produces = MediaType.APPLICATION_JSON_VALUE
+)
+public class EventUpdateController {
+	
+	@PostMapping(value = "/events/{id}")
+	public String createEvents(@PathVariable int id) {
+		return "events " + id;
+	}
+	
+	@PutMapping(value = "/events/{id}")
+	public String updateEvents(@PathVariable int id) {
+		return "events " + id;
+	}
 }
