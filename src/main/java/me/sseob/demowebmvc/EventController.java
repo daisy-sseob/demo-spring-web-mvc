@@ -6,13 +6,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class EventController {
 	
-	@GetMapping(value = "/events/{id}")
-	public String getEvents(@PathVariable int id) {
-		return "events " + id;
+	@GetMapping(value = "/events")
+	public String getEvents() {
+		return "events";
 	}
 	
-	@DeleteMapping(value = "/events/{id}")
+	@GetMapping(value = "/event/{id}")
+	public String getAnEvents(@PathVariable int id) {
+		return "event " + id;
+	}
+	
+	@DeleteMapping(value = "/event/{id}")
 	public String deleteEvents(@PathVariable int id) {
-		return "events " + id;
+		return "event " + id;
 	}
 }

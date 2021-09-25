@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 )
 public class EventUpdateController {
 	
-	@PostMapping(value = "/events/{id}")
+	@PostMapping(value = "/event/{id}")
 	public String createEvents(@PathVariable int id) {
-		return "events " + id;
+		return "event " + id;
 	}
 	
-	@PutMapping(value = "/events/{id}")
+	@PutMapping(value = "/event/{id}")
 	public String updateEvents(@PathVariable int id) {
-		return "events " + id;
+		return "event " + id;
 	}
 }

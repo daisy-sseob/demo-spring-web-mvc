@@ -14,33 +14,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
-public class ExerciseControllerTest {
+public class EventControllerTest {
 
 	@Autowired
 	MockMvc mockMvc;
 
 	@Test
 	public void eventsTest() throws Exception{
-		mockMvc.perform(get("/events/1"))
+		mockMvc.perform(get("/events"))
 				.andExpect(status().isOk())
-				.andExpect(content().string("events " + 1));
+				.andExpect(content().string("events"));
+		
+		mockMvc.perform(get("/event/1"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("event " + 1));
+		
 		mockMvc.perform(
-						post("/events/2")
+						post("/event/2")
 								.accept(MediaType.APPLICATION_JSON)
 								.contentType(MediaType.APPLICATION_JSON)
 				)
 				.andExpect(status().isOk())
-				.andExpect(content().string("events " + 2));
+				.andExpect(content().string("event " + 2));
+		
 		mockMvc.perform(
-						put("/events/3")
+						put("/event/3")
 								.accept(MediaType.APPLICATION_JSON)
 								.contentType(MediaType.APPLICATION_JSON)
 				)
 				.andExpect(status().isOk())
-				.andExpect(content().string("events " + 3));
-		mockMvc.perform(delete("/events/4"))
+				.andExpect(content().string("event " + 3));
+		
+		mockMvc.perform(delete("/event/4"))
 				.andExpect(status().isOk())
-				.andExpect(content().string("events " + 4))
+				.andExpect(content().string("event " + 4))
 		;
 	}
 }
