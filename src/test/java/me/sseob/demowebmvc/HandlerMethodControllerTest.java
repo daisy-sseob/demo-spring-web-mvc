@@ -9,9 +9,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -31,4 +31,32 @@ public class HandlerMethodControllerTest {
 				.andExpect(jsonPath("name").value("sseob"))
 		;
 	}
+	
+	@Test
+	public void eventsRequestParam() throws Exception{
+		mockMvc.perform(
+						post("/eventsRequestParam")
+								.param("name", "sseob")
+								.param("limit", "20")
+				)
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("name").value("sseob"))
+		;
+	}
+	
+	/*
+		thyme leaf를 사용하면 View name과 model 객체도 테스트 가능하다 ! 이건 몰랐네..
+	 */
+	@Test
+	public void eventsForm() throws Exception{
+		mockMvc.perform(
+						get("/handlerMethodEvents/form")
+				)
+				.andDo(print())
+				.andExpect(view().name("events/form"))
+				.andExpect(model().attributeExists("event"))
+		;
+	}
+	
 }
