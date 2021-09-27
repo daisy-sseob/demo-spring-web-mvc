@@ -23,11 +23,12 @@ public class HandlerMethodControllerTest {
 	@Test
 	public void handlerMethodHelloTest() throws Exception{
 		mockMvc.perform(
-					get("/handlerMethodEvents/1")
+						get("/handlerMethodEvents/1;name=sseob")
 				)
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("id").value(1))
+				.andExpect(jsonPath("name").value("sseob"))
 		;
 	}
 }
