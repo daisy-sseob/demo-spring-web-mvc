@@ -44,7 +44,7 @@ public class HandlerMethodControllerTest {
 				.andExpect(jsonPath("name").value("sseob"))
 		;
 	}
-	
+
 	/*
 		thyme leaf를 사용하면 View name과 model 객체도 테스트 가능하다 ! 이건 몰랐네..
 	 */
@@ -59,4 +59,16 @@ public class HandlerMethodControllerTest {
 		;
 	}
 	
+	@Test
+	public void eventsModelAttribute() throws Exception{
+		mockMvc.perform(
+						post("/eventsModelAttribute?id=3")
+								.param("name", "sseob")
+								.param("limit", "-10")
+				)
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("name").value("sseob"))
+		;
+	}
 }

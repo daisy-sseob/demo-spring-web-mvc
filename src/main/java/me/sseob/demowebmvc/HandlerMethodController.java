@@ -2,7 +2,11 @@ package me.sseob.demowebmvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 public class HandlerMethodController {
@@ -38,6 +42,26 @@ public class HandlerMethodController {
 		Event event = new Event();
 		event.setName(name);
 		event.setLimit(limit);
+		return event;
+	}
+	
+	/*
+		ModelAttribute로 복합객체 매핑하기 입니다.
+		
+		@ModelAttribute 매개변수 오른쪽에 BindingResult 매개변수를 사용하면
+		Data Type이 달라서 mapping이 안되며 400 bad request, 실패하던 요청이
+		실패되지 않으며 bindingResult로 에러를 핸들링 할 수 있다.
+	 */
+	@PostMapping("/eventsModelAttribute")
+	@ResponseBody
+	public Event eventsModelAttribute(@Validated(Event.ValidateLimit.class) @ModelAttribute Event event, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			System.out.println("error");
+			bindingResult.getAllErrors().forEach(c -> {
+				System.out.println(c.toString());
+			});
+		}
 		return event;
 	}
 }
