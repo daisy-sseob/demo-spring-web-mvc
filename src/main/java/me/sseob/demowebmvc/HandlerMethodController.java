@@ -53,15 +53,11 @@ public class HandlerMethodController {
 		실패되지 않으며 bindingResult로 에러를 핸들링 할 수 있다.
 	 */
 	@PostMapping("/eventsModelAttribute")
-	@ResponseBody
-	public Event eventsModelAttribute(@Validated(Event.ValidateLimit.class) @ModelAttribute Event event, BindingResult bindingResult) {
+	public String eventsModelAttribute(@Validated @ModelAttribute Event event, BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
-			System.out.println("error");
-			bindingResult.getAllErrors().forEach(c -> {
-				System.out.println(c.toString());
-			});
+			return "/events/form";
 		}
-		return event;
+		return "/events/list";
 	}
 }

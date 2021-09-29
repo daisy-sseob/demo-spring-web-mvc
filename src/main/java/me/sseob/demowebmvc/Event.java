@@ -5,15 +5,12 @@ import javax.validation.constraints.NotBlank;
 
 public class Event {
 	
-	interface ValidateLimit{}
-	interface ValidateName{}
-	
 	private Integer id;
 	
-	@NotBlank(groups = ValidateName.class, message = "이름은 필수 입력값 입니다.")
+	@NotBlank(message = "이름은 필수값 입니다.")
 	private String name;
 	
-	@Min(value = 1, message = "최소값은 1 입니다.", groups = ValidateLimit.class)
+	@Min(value = 1, message = "limit 값은 1 이상이어야 합니다 ! ")
 	private Integer limit;
 
 	public Integer getLimit() {

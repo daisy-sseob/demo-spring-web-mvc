@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -61,14 +65,17 @@ public class HandlerMethodControllerTest {
 	
 	@Test
 	public void eventsModelAttribute() throws Exception{
-		mockMvc.perform(
+		ResultActions resultActions = mockMvc.perform(
 						post("/eventsModelAttribute?id=3")
 								.param("name", "sseob")
 								.param("limit", "-10")
 				)
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("name").value("sseob"))
-		;
+				.andExpect(model().hasErrors());
+
+		ModelAndView modelAndView = resultActions.andReturn().getModelAndView();
+		Map<String, Object> model = modelAndView.getModel();
+		System.out.println(model.size());
 	}
 }
