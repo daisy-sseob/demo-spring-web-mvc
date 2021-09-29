@@ -11,7 +11,7 @@
         <input type="submit" value="Create">
     </form>
     
-    <form action="#" th:action="@{/eventsModelAttribute}" method="post" th:object="${event}">
+    <form action="#" th:action="@{/events}" method="post" th:object="${event}">
         <p th:if="${#fields.hasErrors('limit')}" th:errors="*{limit}" >Incorrect date</p>
         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" >Incorrect name</p>
         <input type="text" title="name" th:field="*{name}">

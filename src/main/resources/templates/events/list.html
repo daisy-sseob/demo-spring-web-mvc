@@ -5,18 +5,11 @@
     <title>Create new Event</title>
 </head>
 <body>
-    <form action="#" th:action="@{/eventsRequestParam}" method="post" th:object="${event}">
-        <input type="text" title="name" th:field="*{name}">
-        <input type="text" title="limit" th:field="*{limit}">
-        <input type="submit" value="Create">
-    </form>
-    
-    <form action="#" th:action="@{/eventsModelAttribute}" method="post" th:object="${event}">
-        <p th:if="${#fields.hasErrors('limit')}" th:errors="*{limit}" >Incorrect date</p>
-        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" >Incorrect name</p>
-        <input type="text" title="name" th:field="*{name}">
-        <input type="text" title="limit" th:field="*{limit}">
-        <input type="submit" value="RequestModelArribute">
-    </form>
+    <a th:href="@{/events/form}">Create New Event</a>
+    <div th:unless="${#lists.isEmpty(eventList)}">
+        <ul th:each=" event : ${eventList}">
+            <p th:text="${event.name}">Event Name</p>
+        </ul>
+    </div>
 </body>
 </html>

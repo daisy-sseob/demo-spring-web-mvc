@@ -13,6 +13,15 @@ public class Event {
 	@Min(value = 1, message = "limit 값은 1 이상이어야 합니다 ! ")
 	private Integer limit;
 
+	public Event() {
+		
+	}
+	
+	public Event(String name, Integer id) {
+		this.name = name;
+		this.id = id;
+	}
+
 	public Integer getLimit() {
 		return limit;
 	}
@@ -35,5 +44,14 @@ public class Event {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Event{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", limit=" + limit +
+				'}';
 	}
 }

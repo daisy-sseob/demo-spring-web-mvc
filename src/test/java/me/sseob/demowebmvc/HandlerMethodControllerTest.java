@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -54,19 +56,23 @@ public class HandlerMethodControllerTest {
 	 */
 	@Test
 	public void eventsForm() throws Exception{
-		mockMvc.perform(
-						get("/handlerMethodEvents/form")
+		MockHttpServletRequest request = mockMvc.perform(
+						get("/events/form")
 				)
 				.andDo(print())
 				.andExpect(view().name("events/form"))
 				.andExpect(model().attributeExists("event"))
-		;
+				.andExpect(request().sessionAttribute("event", notNullValue()))
+				.andReturn().getRequest();
+
+		Object event = request.getSession().getAttribute("event");
+		System.out.println(event);
 	}
 	
 	@Test
-	public void eventsModelAttribute() throws Exception{
+	public void createEvent() throws Exception{
 		ResultActions resultActions = mockMvc.perform(
-						post("/eventsModelAttribute?id=3")
+						post("/events?id=3")
 								.param("name", "sseob")
 								.param("limit", "-10")
 				)
