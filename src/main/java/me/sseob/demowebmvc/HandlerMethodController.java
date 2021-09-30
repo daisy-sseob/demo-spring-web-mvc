@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import javax.websocket.Session;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,38 +22,46 @@ import java.util.List;
 @SessionAttributes("event")
 public class HandlerMethodController {
 	
-	@GetMapping("/events/form")
-	public String eventsForm(Model model, HttpSession session) {
-		Event event = new Event();
-		event.setId(1);
-		event.setName("sseob");
-		event.setLimit(50);
-		model.addAttribute("event", event);
-
-//		session.setAttribute("event", event);
-		return "events/form";
+	@GetMapping("/events/form/name")
+	public String eventsFormName(Model model) {
+		model.addAttribute("event", new Event());
+		return "events/form-name";
 	}
 
 	/*
 		ModelAttribute로 복합객체 매핑하기 입니다.
-		
+		@ModelAttribute는 session 객체도 바인딩 받는다.
 		@ModelAttribute 매개변수 오른쪽에 BindingResult 매개변수를 사용하면
 		Data Type이 달라서 mapping이 안되며 400 bad request, 실패하던 요청이
 		실패되지 않으며 bindingResult로 에러를 핸들링 할 수 있다.
 	 */
-	@PostMapping("/events")
-	public String createEvent(@Validated @ModelAttribute Event event,
-	                          BindingResult bindingResult,
-	                          SessionStatus sessionStatus) {
+	@PostMapping("/events/form/name")
+	public String createFormNameSubmit(@Validated @ModelAttribute Event event,
+	                          BindingResult bindingResult) {
 		
 		//validation 실패했을 경우. error가 있을 경우
 		if (bindingResult.hasErrors()) {
-			return "/events/form";
+			return "/events/form-name";
 		}
+		return "redirect:/events/form/limit"; //redirect 시키기
+	}
+	
+	@GetMapping("/events/form/limit")
+	public String eventsFormLimit(@ModelAttribute Event event, Model model) {
+		model.addAttribute("event", event);
+		return "events/form-limit";
+	}
 
-		//form 처리가 끝나고 session을 비운다.
-		sessionStatus.setComplete();
-		return "redirect:/events/list"; //redirect 시키기
+	@PostMapping("/events/form/limit")
+	public String createFormLimitSubmit(@Validated @ModelAttribute Event event,
+	                                    BindingResult bindingResult,
+	                                    SessionStatus sessionStatus) {
+		if (bindingResult.hasErrors()) {
+			return "/events/form-limit";
+		}
+		
+		sessionStatus.setComplete(); // submit이 모두 완료되면 session 비우기.
+		return "redirect:/events/list";
 	}
 
 	/*
