@@ -9,6 +9,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,9 @@ public class HandlerMethodController {
 		events/list view를 return하므로써 사용자가 브라우저에서 refresh를 했을때 다시 submit이 되지않게 한다.
 	 */
 	@GetMapping("/events/list")
-	public String getEvents(Model model) {
+	public String getEvents(Model model, @SessionAttribute LocalDateTime visitTime) {
+		System.out.println(visitTime);
+		
 		List<Event> eventList = new ArrayList<>();
 		eventList.add(new Event("sseob !!", 10));
 		model.addAttribute("eventList", eventList);
