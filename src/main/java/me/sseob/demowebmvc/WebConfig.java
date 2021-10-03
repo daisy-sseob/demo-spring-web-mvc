@@ -1,5 +1,7 @@
 package me.sseob.demowebmvc;
 
+import org.apache.tika.Tika;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -22,5 +24,11 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new VisitTimeInterceptor());
+	}
+	
+	// tika bean으로 등록
+	@Bean
+	public Tika tika() {
+		return new Tika();
 	}
 }

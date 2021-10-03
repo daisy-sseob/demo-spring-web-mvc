@@ -6,11 +6,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -53,19 +55,33 @@ public class HandlerMethodController {
 		return "events/form-limit";
 	}
 
+
+	/*
+	 * RedirectAttributes를 사용하면 redirect할 때의 query param으로 전달하려고 하는 데이터를 명시할 수 있다. 
+	 * queryString으로 전달해야되기 때문에 String 으로 변환 가능한 값만 사용할 수 있다.
+	 */
 	@PostMapping("/events/form/limit")
 	public String createFormLimitSubmit(@Validated @ModelAttribute Event event,
 	                                    BindingResult bindingResult,
 	                                    SessionStatus sessionStatus,
-	                                    Model model) {
+	                                    RedirectAttributes attributes) {
 		if (bindingResult.hasErrors()) {
 			return "/events/form-limit";
 		}
 		
 		sessionStatus.setComplete(); // submit이 모두 완료되면 session 비우기.
 		
-		model.addAttribute("name", event.getName());
-		model.addAttribute("limit", event.getLimit());
+//		attributes.addAttribute("name", event.getName());
+//		attributes.addAttribute("limit", event.getLimit());
+		
+		/*
+			Flash Attributes redirect하기전에 데이터를 Http 세션에 저장하고 redirect를 요청 처리후 즉시 세션을 제거한다.
+			RedirectAttributes는 Event class같은 복합 객체를 전달하는데 어려움이 있지만 Flash Attributes는 복합 객체도 가능하다.
+			redirec된 method의 Model 객체로 바로 매핑되기 때문에 따로 mapping하기위한 부가작업이 필요없다.
+			session을 통해 전달되기 때문에 uri에 데이터가 노출되지 않는다.
+		 */
+		attributes.addFlashAttribute("newEvent", event);
+		
 		return "redirect:/events/list";
 	}
 
@@ -75,11 +91,19 @@ public class HandlerMethodController {
 		events/list view를 return하므로써 사용자가 브라우저에서 refresh를 했을때 다시 submit이 되지않게 한다.
 	 */
 	@GetMapping("/events/list")
-	public String getEvents(Model model, @SessionAttribute LocalDateTime visitTime) {
+	public String getEvents(
+	        Model model,
+	        @SessionAttribute LocalDateTime visitTime //SessionAttribute를 이용하여 session에서 visitTime을 매핑.
+	) {
 		System.out.println(visitTime);
-		
+
+		//FlashAttributes를 이용했을 경우 Model객체에 바로 매핑된다. 사용시 캐스팅해서 사용해야됨.
+		Event newEvent = (Event) model.asMap().get("newEvent");
+
 		List<Event> eventList = new ArrayList<>();
 		eventList.add(new Event("sseob !!", 10));
+		eventList.add(newEvent);
+		
 		model.addAttribute("eventList", eventList);
 		return "/events/list";
 	}
@@ -93,6 +117,8 @@ public class HandlerMethodController {
 		Event event = new Event();
 		event.setId(id);
 		event.setName(name);
+		
+		
 		return event;
 	}
 	
@@ -108,7 +134,7 @@ public class HandlerMethodController {
 		Event event = new Event();
 		event.setName(name);
 		event.setLimit(limit);
+
 		return event;
 	}
-	
 }

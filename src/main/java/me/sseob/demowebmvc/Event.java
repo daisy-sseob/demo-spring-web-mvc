@@ -21,6 +21,12 @@ public class Event {
 		this.name = name;
 		this.id = id;
 	}
+	
+	public Event(String name,Integer id, Integer limit) {
+		this.id = id;
+		this.name = name;
+		this.limit = limit;
+	}
 
 	public Integer getLimit() {
 		return limit;
