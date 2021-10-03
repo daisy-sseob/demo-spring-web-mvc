@@ -56,12 +56,16 @@ public class HandlerMethodController {
 	@PostMapping("/events/form/limit")
 	public String createFormLimitSubmit(@Validated @ModelAttribute Event event,
 	                                    BindingResult bindingResult,
-	                                    SessionStatus sessionStatus) {
+	                                    SessionStatus sessionStatus,
+	                                    Model model) {
 		if (bindingResult.hasErrors()) {
 			return "/events/form-limit";
 		}
 		
 		sessionStatus.setComplete(); // submit이 모두 완료되면 session 비우기.
+		
+		model.addAttribute("name", event.getName());
+		model.addAttribute("limit", event.getLimit());
 		return "redirect:/events/list";
 	}
 
