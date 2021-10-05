@@ -27,7 +27,6 @@ public class EventApiTest {
 	@Autowired
 	MockMvc mockMvc;
 	
-	
 	@Test
 	public void createEvent() throws Exception{
 

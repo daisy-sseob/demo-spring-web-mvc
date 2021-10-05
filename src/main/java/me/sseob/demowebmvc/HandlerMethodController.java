@@ -4,15 +4,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /*
@@ -24,13 +22,22 @@ import java.util.List;
 @Controller
 @SessionAttributes("event")
 public class HandlerMethodController {
+
+	@ModelAttribute
+	public void categories(Model model) {
+		model.addAttribute("categories", List.of("study", "seminar", "hobby", "social"));
+	}
+
+	@InitBinder
+	public void initEventBindr(WebDataBinder webDataBinder) {
+		webDataBinder.setDisallowedFields("id");
+	}
 	
 	@GetMapping("/events/form/name")
 	public String eventsFormName(Model model) {
 		model.addAttribute("event", new Event());
 		return "events/form-name";
 	}
-
 	/*
 		ModelAttribute로 복합객체 매핑하기 입니다.
 		@ModelAttribute는 session 객체도 바인딩 받는다.

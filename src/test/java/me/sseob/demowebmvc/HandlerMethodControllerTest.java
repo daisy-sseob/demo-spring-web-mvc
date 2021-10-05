@@ -99,6 +99,7 @@ public class HandlerMethodControllerTest {
 				)
 				.andDo(print())
 				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("categories"))
 				.andExpect(xpath("//p").nodeCount(2)) //html본문 테스트
 		;
 	}
