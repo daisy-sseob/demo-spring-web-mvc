@@ -16,27 +16,19 @@ import java.util.List;
 /*
 	SessionAttributes -> Model의 attribute중에 SessionAttributes에 설정된 key값과 같은 값이 있다면
 	HttpSession에 넣어준다.
-	
 	개발자가 직접 HttpSession 객체에 값을 넣어주지 않아도 된다.
  */
 @Controller
 @SessionAttributes("event")
 public class HandlerMethodController {
-
-	@ModelAttribute
-	public void categories(Model model) {
-		model.addAttribute("categories", List.of("study", "seminar", "hobby", "social"));
-	}
-
-	@InitBinder
-	public void initEventBindr(WebDataBinder webDataBinder) {
-		webDataBinder.setDisallowedFields("id");
-	}
 	
 	@GetMapping("/events/form/name")
 	public String eventsFormName(Model model) {
-		model.addAttribute("event", new Event());
-		return "events/form-name";
+
+		throw new EventException();
+		
+//		model.addAttribute("event", new Event());
+//		return "events/form-name";
 	}
 	/*
 		ModelAttribute로 복합객체 매핑하기 입니다.

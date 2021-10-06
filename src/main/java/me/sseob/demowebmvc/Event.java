@@ -1,7 +1,11 @@
 package me.sseob.demowebmvc;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Event {
 	
@@ -12,6 +16,9 @@ public class Event {
 	
 	@Min(value = 1, message = "limit 값은 1 이상이어야 합니다 ! ")
 	private Integer limit;
+	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	private LocalDate startDate;
 
 	public Event() {
 		
@@ -30,6 +37,14 @@ public class Event {
 
 	public Integer getLimit() {
 		return limit;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
 
 	public void setLimit(Integer limit) {

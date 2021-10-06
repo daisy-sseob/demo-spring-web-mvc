@@ -13,6 +13,11 @@ import javax.validation.Valid;
 @RequestMapping("/api/events")
 public class EventApi {
 
+	@ExceptionHandler
+	public ResponseEntity errorApiHandler(RuntimeException e) {
+		return ResponseEntity.badRequest().body("can't create event as.. not valid name..");
+	}
+	
 	/*
 		HttpEntity로 header정보까지 받기
 	@PostMapping
@@ -22,7 +27,6 @@ public class EventApi {
 		return request.getBody();
 	}
 	 */
-	
 	@PostMapping
 	public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
