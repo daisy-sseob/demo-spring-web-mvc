@@ -24,11 +24,8 @@ public class HandlerMethodController {
 	
 	@GetMapping("/events/form/name")
 	public String eventsFormName(Model model) {
-
-		throw new EventException();
-		
-//		model.addAttribute("event", new Event());
-//		return "events/form-name";
+		model.addAttribute("event", new Event());
+		return "events/form-name";
 	}
 	/*
 		ModelAttribute로 복합객체 매핑하기 입니다.
